@@ -98,3 +98,17 @@ The connection timed out, confirming that the rule was effective and simulating 
 ```bash
 ssh azureuser@172.203.144.32
 ```
+---
+
+### Step 8 – Fix NSG Rule and Restore SSH Access
+
+Deleted the custom `DenySSH` rule from the Network Security Group to allow inbound SSH traffic again.  
+This resolved the simulated outage and restored administrator access to the virtual machine — completing the end-to-end troubleshooting lifecycle.
+
+**Command:**
+```bash
+az network nsg rule delete \
+  --resource-group Lab1ResourceGroup \
+  --nsg-name Lab1VMNSG \
+  --name DenySSH
+```
