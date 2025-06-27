@@ -86,4 +86,15 @@ az network nsg rule create \
 
   --generate-ssh-keys \
   --no-wait
+
+---
+
+### Step 7 – SSH Attempt After NSG Deny Rule (Expected Failure)
+
+Re-attempted SSH to the VM after explicitly blocking port 22 via the NSG.  
+The connection timed out, confirming that the rule was effective and simulating a real-world scenario of port misconfiguration.
+
+**Command:**
+```bash
+ssh azureuser@172.203.144.32
 ```
