@@ -48,6 +48,18 @@ az vm list-ip-addresses \
   --resource-group Lab1ResourceGroup \
   --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" \
   -o tsv
+```
+---
+
+### Step 5 – SSH Attempt (Unexpected Success)
+
+Attempted SSH connection to the VM using the public IP, expecting it to fail due to a blocked port.  
+However, the connection succeeded — indicating that the default NSG attached to the VM subnet or NIC already had port 22 open.
+
+**Command:**
+```bash
+ssh azureuser@172.203.144.32
+```
 
 
   --generate-ssh-keys \
