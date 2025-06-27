@@ -61,6 +61,28 @@ However, the connection succeeded — indicating that the default NSG attached t
 ssh azureuser@172.203.144.32
 ```
 
+---
+
+### Step 6 – Simulate Blocked SSH via NSG Rule
+
+Manually created a Deny rule in the Network Security Group to block inbound SSH traffic on port 22.  
+This simulates a real-world NSG misconfiguration that causes connectivity loss to Azure VMs.
+
+**Command:**
+```bash
+az network nsg rule create \
+  --resource-group Lab1ResourceGroup \
+  --nsg-name Lab1VMNSG \
+  --name DenySSH \
+  --priority 100 \
+  --access Deny \
+  --protocol Tcp \
+  --direction Inbound \
+  --destination-port-ranges 22 \
+  --source-address-prefixes '*' \
+  --destination-address-prefixes '*'
+```
+
 
   --generate-ssh-keys \
   --no-wait
