@@ -34,6 +34,22 @@ az vm create \
   --name Lab1VM \
   --image Ubuntu2204 \
   --admin-username azureuser \
+```
+---
+
+### Step 4 – Extract VM Public IP
+
+Retrieved the public IP assigned to `Lab1VM` using Azure CLI. This step confirms the VM is externally addressable and helps verify connectivity before any troubleshooting begins.
+
+**Command:**
+```bash
+az vm list-ip-addresses \
+  --name Lab1VM \
+  --resource-group Lab1ResourceGroup \
+  --query "[].virtualMachine.network.publicIpAddresses[].ipAddress" \
+  -o tsv
+
+
   --generate-ssh-keys \
   --no-wait
 ```
