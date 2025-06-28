@@ -93,13 +93,17 @@ az storage account keys list \
   --account-name <your-storage-account-name> \
   -o table
 ```
-Full SAS URL: https://<storage-account-name>.blob.core.windows.net/<container-name>/<blob-name>?<SAS-token>
+**Note:** Example SAS URL format: https://<storage-account-name>.blob.core.windows.net/<container-name>/<blob-name>?<SAS-token>
 
 ### Step 6 – Simulate Blob Access Denial and Troubleshoot
 
 Using the generated SAS URL from Step 5, an attempt was made to access the blob via a web browser.
 
-❌ The result was an access denial with the following error: <Error> <Code>PublicAccessNotPermitted</Code> <Message>Public access is not permitted on this storage account.</Message> </Error> 
+❌ The result was an access denial with the following error: 
+<Error> 
+  <Code>PublicAccessNotPermitted</Code> 
+  <Message>Public access is not permitted on this storage account.</Message> 
+</Error> 
 
 This outcome simulates a realistic cloud support issue where a user cannot access a blob due to access restrictions. In this case, the error was caused by the storage account’s public access setting being disabled — a default in many secure configurations. The proper support path would involve generating a new SAS token or modifying access control policies depending on the organization's security policies
 
@@ -129,18 +133,17 @@ az storage container set-permission \
   --name lab3container \
   --public-access blob \
   --account-name lab3storage16792 \
-  --account-key <REDACTED>
+--account-key <your-storage-account-key>
 ```
 Expected: This command should allow unauthenticated (public) users to read blobs within the container by enabling public access at the container level.
 
-Actual: <Error>
+Actual: 
+<Error>
   <Code>PublicAccessNotPermitted</Code>
   <Message>Public access is not permitted on this storage account.</Message>
 </Error>
 
 Explanation: Azure storage accounts now have public access disabled by default as a security measure. Although the container-level permission command executed, the storage account itself is blocking public access, resulting in the error when trying to access the blob using the SAS URL.
-
-Azure storage accounts now have public access disabled by default as a security measure. Although the container-level permission command executed, the storage account itself is blocking public access, resulting in the error when trying to access the blob using the SAS URL.
 
 Expected Results if allowed: true
 Actual Results in Sandbox: false
@@ -165,8 +168,24 @@ If the storage account allowed public access, the following steps would be taken
       --name lab3container \
       --public-access blob \
       --account-name lab3storage16792
-```
+  ```
 3. Validate Blob Access in a Browser
    
+---
+Since the sandbox does not permit enabling public access on the storage account, the remaining steps are theoretical and demonstrate what would be done in a real-world scenario.
 
-   
+
+### Step 9 – Resolution Summary & Long-Term Recommendations
+This final step summarizes the issue encountered, outlines the actions taken to troubleshoot it, and provides recommendations to prevent similar issues in a production environment.
+
+Root Cause
+The access denial occurred due to a PublicAccessNotPermitted error returned when attempting to access the blob via a SAS URL. Although the SAS token was generated correctly and the blob container permissions were updated, the storage account's allowBlobPublicAccess setting was configured to false. This account-level restriction prevented any form of anonymous access, overriding the container-level settings and effectively rendering the SAS token unusable for public access.
+
+Support Actions Taken
+To investigate the issue, the storage account configuration was examined using Azure CLI commands. We confirmed the allowBlobPublicAccess setting was disabled. Attempts to enable public read access at the container level were unsuccessful due to the account-level restriction. SAS tokens were generated and tested, and the resulting error messages were analyzed to determine the root cause. These steps reflect how a support team would troubleshoot a real-world blob access issue caused by security configurations.
+
+Key Takeaways
+Azure now disables public blob access by default to enhance storage security. A valid SAS token is not sufficient on its own to grant access if the storage account is configured to block public access. Successful blob access relies on the alignment of several configuration layers, including token scope and expiration, container-level permissions, and account-level settings. Troubleshooting should follow a logical process: verify token validity, review container permissions, and inspect the storage account’s access policies.
+
+Recommendations for Production Environments
+To avoid similar issues in live environments, organizations should avoid using public blob access unless absolutely necessary. Instead, secure access should be managed through properly scoped SAS tokens and Azure role-based access control (RBAC). Storage account policies should be standardized and enforced to ensure consistent security configurations. Additionally, monitoring and alerting for expired or misconfigured SAS tokens can improve operational response. Support teams should maintain detailed internal documentation—such as standard operating procedures (SOPs) or runbooks—so that common access issues can be quickly diagnosed and resolved.
