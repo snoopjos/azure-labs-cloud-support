@@ -95,3 +95,29 @@ az storage account keys list \
 ```
 Full SAS URL: https://<storage-account-name>.blob.core.windows.net/<container-name>/<blob-name>?<SAS-token>
 
+### Step 6 – Simulate Blob Access Denial and Troubleshoot
+
+Using the generated SAS URL from Step 5, an attempt was made to access the blob via a web browser.
+
+❌ The result was an access denial with the following error: <Error> <Code>PublicAccessNotPermitted</Code> <Message>Public access is not permitted on this storage account.</Message> </Error> 
+
+This outcome simulates a realistic cloud support issue where a user cannot access a blob due to access restrictions. In this case, the error was caused by the storage account’s public access setting being disabled — a default in many secure configurations. The proper support path would involve generating a new SAS token or modifying access control policies depending on the organization's security policies
+
+
+
+### Step 7 – Verify Storage Account Public Access Configuration
+
+To investigate the `PublicAccessNotPermitted` error received when accessing the blob via a Shared Access Signature (SAS) URL, we verified the storage account’s public access settings.
+
+**Command Used:**
+```bash
+az storage account show \
+  --name lab3storage16792 \
+  --resource-group learn-9cc8f79c-5d59-4135-b95d-569466e39239 \
+  --query "allowBlobPublicAccess"
+```
+Output: false
+
+The output indicates that the storage account has public blob access disabled, which prevents anonymous access to blobs even with a valid SAS token. This is a common security configuration in enterprise environments.
+
+
