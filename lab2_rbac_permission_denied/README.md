@@ -17,3 +17,17 @@ Deployed a new resource group to scope all Lab 2 resources.
 az group create --name Lab2ResourceGroup --location eastus
 ```
 
+### Step 3 – Storage Account Creation (Permission Denied)
+
+Attempted to create a new storage account inside the sandbox resource group to simulate an RBAC issue.
+
+Azure returned an `AuthorizationFailed` error due to insufficient role permissions (`Microsoft.Storage/storageAccounts/write`) on the current user account. This accurately reflects a real-world cloud support scenario where a user is assigned an incorrect RBAC role such as "Reader" instead of "Contributor."
+
+**Command:**
+```bash
+az storage account create \
+  --name lab2storage$RANDOM \
+  --resource-group Lab2ResourceGroup \
+  --location eastus \
+  --sku Standard_LRS
+```
