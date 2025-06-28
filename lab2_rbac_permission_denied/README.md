@@ -7,3 +7,13 @@ This lab simulates a common Azure support scenario where a user is unable to acc
 ### Step 1 – Lab Folder Initialization
 
 A dedicated GitHub folder was created for Lab 2. All documentation, screenshots, and runbook details for this lab are maintained here.
+
+### Step 2 – Resource Group Creation
+
+Deployed a new resource group to scope all Lab 2 resources.
+
+**Command:**
+```bash
+az group create --name Lab2ResourceGroup --location eastus
+```
+
