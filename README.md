@@ -1,9 +1,25 @@
-# Azure Labs – Cloud Support Engineering
+# Azure Cloud Support Engineering Labs
 
-Hands-on troubleshooting scenarios designed to simulate real L1/L2 Azure cloud support tickets.  
-Each lab focuses on a realistic failure scenario and walks through diagnosis, resolution, and cleanup using Azure CLI.
+This repository contains hands-on labs that simulate real-world L1/L2 Azure support engineering scenarios. Each lab replicates common issues faced in production environments and includes detailed remediation steps using the Azure CLI.
 
-## Included Labs
+## Labs Completed
 
-- [Lab 1 – VM NSG Troubleshooting](./lab1_vm_connectivity)  
-  Simulates a VM connectivity failure caused by a blocked SSH port in a Network Security Group.
+### Lab 1 – VM Connectivity Failure (NSG Blocked Port)
+Simulates a virtual machine becoming unreachable due to a misconfigured Network Security Group blocking port 22. The issue is diagnosed and resolved using CLI-based troubleshooting.
+Folder: [lab1_vm_connectivity](./lab1_vm_connectivity)
+
+### Lab 2 – RBAC Misassignment (Permission Denied)
+Simulates a permissions issue when attempting to create a resource with insufficient RBAC privileges. Root cause analysis and proper resolution are documented.
+Folder: [lab2_rbac_permission_denied](./lab2_rbac_permission_denied)
+
+## Repository Structure
+
+Each lab directory contains:
+- A README file with step-by-step documentation
+- Azure CLI commands and outputs
+- Root cause and resolution notes
+- Screenshots demonstrating each stage of the issue and fix
+
+## Purpose
+
+These labs are designed to demonstrate practical Azure troubleshooting, scripting, and documentation skills. They reflect day-to-day responsibilities of entry-level cloud engineers, particularly in L1/L2 support roles using Microsoft Azure.
