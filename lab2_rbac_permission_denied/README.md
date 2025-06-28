@@ -31,3 +31,17 @@ az storage account create \
   --location eastus \
   --sku Standard_LRS
 ```
+
+### Step 4 – (Documented) Resolution: RBAC Role Assignment
+
+In a real-world environment, this issue would be resolved by assigning the correct RBAC role (such as **Contributor**) to the user attempting to create the Storage Account.
+
+Since the Microsoft Learn Sandbox does not allow role assignments, this step is documented only.
+
+**Resolution Command (Not Executed):**
+```bash
+az role assignment create \
+  --assignee <user-object-id> \
+  --role "Contributor" \
+  --scope /subscriptions/<subscription-id>/resourceGroups/Lab2ResourceGroup
+
