@@ -69,3 +69,29 @@ az storage blob upload \
   --name testfile.txt \
   --file testfile.txt
 ```
+
+### Step 5 – Generate SAS Token and Access Blob
+
+Generated a SAS (Shared Access Signature) token that grants **read access** to the uploaded blob for a short duration (1 minute), simulating a real-world expiring link scenario.
+
+✅ Verified access by pasting the full SAS URL into a browser and successfully previewing the text file contents.
+
+**Command to generate the SAS token (with secure key authentication):**
+```bash
+az storage blob generate-sas \
+  --account-name lab3storage16792 \
+  --container-name lab3container \
+  --name testfile.txt \
+  --permissions r \
+  --expiry $(date -u -d '1 minute' '+%Y-%m-%dT%H:%MZ') \
+  --https-only \
+  --account-key <your-storage-account-key> \
+  -o tsv
+
+az storage account keys list \
+  --resource-group <your-resource-group> \
+  --account-name <your-storage-account-name> \
+  -o table
+```
+Full SAS URL: https://<storage-account-name>.blob.core.windows.net/<container-name>/<blob-name>?<SAS-token>
+
