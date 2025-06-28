@@ -39,3 +39,25 @@ az network vnet create \
   --subnet-name Subnet2 \
   --subnet-prefix 10.1.1.0/24
 ```
+### Step 3 – Create VNet Peering (VNet1 ↔ VNet2)
+
+Established bidirectional VNet peering between `VNet1` and `VNet2` to allow communication between their respective subnets.
+
+✅ Verified peering connections were successfully created in both directions.
+
+**Commands:**
+```bash
+az network vnet peering create \
+  --name VNet1ToVNet2 \
+  --resource-group VNetPeeringLabRG \
+  --vnet-name VNet1 \
+  --remote-vnet VNet2 \
+  --allow-vnet-access
+
+az network vnet peering create \
+  --name VNet2ToVNet1 \
+  --resource-group VNetPeeringLabRG \
+  --vnet-name VNet2 \
+  --remote-vnet VNet1 \
+  --allow-vnet-access
+```
