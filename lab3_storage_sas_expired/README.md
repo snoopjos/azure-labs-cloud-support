@@ -46,3 +46,26 @@ az storage container create \
   --name lab3container \
   --auth-mode login
 ```
+### Step 4 – Upload Blob Using Storage Account Key
+
+Uploaded a test file (`testfile.txt`) to the previously created blob container using a **Storage Account Key** for authentication. This step simulates standard upload access prior to the SAS token expiry scenario.
+
+Before uploading the blob, we retrieved the **Storage Account Key** needed for authentication. This method is used in scenarios where role-based access control (RBAC) is insufficient or not granted.
+
+**Retrieve Storage Account Key:**
+```bash
+az storage account keys list \
+  --resource-group learn-9cc8f79c-5d59-4135-b95d-569466e39239 \
+  --account-name lab3storage16792 \
+  -o table
+```
+
+**Command:**
+```bash
+az storage blob upload \
+  --account-name lab3storage16792 \
+  --account-key <your-storage-account-key> \
+  --container-name lab3container \
+  --name testfile.txt \
+  --file testfile.txt
+```
