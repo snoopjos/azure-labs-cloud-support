@@ -23,3 +23,19 @@ az network vnet create \
   --subnet-name Subnet1 \
   --subnet-prefix 10.0.1.0/24
 ```
+### Step 2 – Create VNet2 with Subnet2
+
+Created a second Virtual Network (`VNet2`) in the `westus` region with an associated subnet named `Subnet2`. This VNet will be peered with `VNet1` to enable inter-VNet communication.
+
+✅ Verified successful creation and confirmed the address space is non-overlapping with VNet1.
+
+**Command:**
+```bash
+az network vnet create \
+  --name VNet2 \
+  --resource-group VNetPeeringLabRG \
+  --location westus \
+  --address-prefix 10.1.0.0/16 \
+  --subnet-name Subnet2 \
+  --subnet-prefix 10.1.1.0/24
+```
