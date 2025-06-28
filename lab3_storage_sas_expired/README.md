@@ -120,4 +120,53 @@ Output: false
 
 The output indicates that the storage account has public blob access disabled, which prevents anonymous access to blobs even with a valid SAS token. This is a common security configuration in enterprise environments.
 
+### Step 8 – Attempt to Enable Public Read Access at the Container Level
 
+To simulate a public user accessing the blob file, we attempted to grant **public read access** to the container using the following command:
+
+```bash
+az storage container set-permission \
+  --name lab3container \
+  --public-access blob \
+  --account-name lab3storage16792 \
+  --account-key <REDACTED>
+```
+Expected: This command should allow unauthenticated (public) users to read blobs within the container by enabling public access at the container level.
+
+Actual: <Error>
+  <Code>PublicAccessNotPermitted</Code>
+  <Message>Public access is not permitted on this storage account.</Message>
+</Error>
+
+Explanation: Azure storage accounts now have public access disabled by default as a security measure. Although the container-level permission command executed, the storage account itself is blocking public access, resulting in the error when trying to access the blob using the SAS URL.
+
+Azure storage accounts now have public access disabled by default as a security measure. Although the container-level permission command executed, the storage account itself is blocking public access, resulting in the error when trying to access the blob using the SAS URL.
+
+Expected Results if allowed: true
+Actual Results in Sandbox: false
+
+Explanation: Since the storage account's allowBlobPublicAccess setting is false, container-level settings to allow public access will be overridden and denied
+
+### What We'd Do If Access Was Permitted
+
+If the storage account allowed public access, the following steps would be taken to resolve the blob access issue:
+
+1. **Enable Public Access on the Storage Account**  
+   (Only if permitted by organizational policy and not restricted by Azure sandbox):
+
+   ```bash
+   az storage account update \
+     --name lab3storage16792 \
+     --set allowBlobPublicAccess=true
+   ```
+2. Update Container Access Level
+  ```bash
+  az storage container set-permission \
+      --name lab3container \
+      --public-access blob \
+      --account-name lab3storage16792
+```
+3. Validate Blob Access in a Browser
+   
+
+   
