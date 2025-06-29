@@ -90,3 +90,64 @@ az network vnet subnet list \
 ```
 Verification showed both subnets and both VMs were provisioned and assigned to the correct virtual networks
 
+### Step 5 – Create and Assign Network Security Groups (NSGs)
+To simulate traffic control between the two peered VNets, we created and applied Network Security Groups (NSGs) to each subnet. This mimics real-world scenarios where L1/L2 support engineers must verify whether connectivity issues are caused by network-level security restrictions.
+
+We created two NSGs (VNet1-NSG and VNet2-NSG) and added inbound rules to allow traffic from the virtual network. These NSGs were then associated with their respective subnets.
+
+✅ Verified successful creation of NSGs, rule assignments, and subnet associations.
+
+Create NSGs: 
+``` bash
+az network nsg create \
+  --resource-group VNetPeeringLabRG \
+  --name VNet1-NSG \
+  --location westus
+
+az network nsg create \
+  --resource-group VNetPeeringLabRG \
+  --name VNet2-NSG \
+  --location westus
+```
+Add inbound allow rules:
+```
+az network nsg rule create \
+  --resource-group VNetPeeringLabRG \
+  --nsg-name VNet1-NSG \
+  --name AllowVNetInBound \
+  --protocol '*' \
+  --direction Inbound \
+  --priority 100 \
+  --source-address-prefix VirtualNetwork \
+  --source-port-range '*' \
+  --destination-address-prefix '*' \
+  --destination-port-range '*' \
+  --access Allow
+
+az network nsg rule create \
+  --resource-group VNetPeeringLabRG \
+  --nsg-name VNet2-NSG \
+  --name AllowVNetInBound \
+  --protocol '*' \
+  --direction Inbound \
+  --priority 100 \
+  --source-address-prefix VirtualNetwork \
+  --source-port-range '*' \
+  --destination-address-prefix '*' \
+  --destination-port-range '*' \
+  --access Allow
+```
+Associate NSGs with subnets: 
+``` bash
+az network vnet subnet update \
+  --vnet-name VNet1 \
+  --name Subnet1 \
+  --resource-group VNetPeeringLabRG \
+  --network-security-group VNet1-NSG
+
+az network vnet subnet update \
+  --vnet-name VNet2 \
+  --name Subnet2 \
+  --resource-group VNetPeeringLabRG \
+  --network-security-group VNet2-NSG
+```
