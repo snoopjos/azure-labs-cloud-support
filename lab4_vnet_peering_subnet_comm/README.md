@@ -61,3 +61,32 @@ az network vnet peering create \
   --remote-vnet VNet1 \
   --allow-vnet-access
 ```
+
+### Step 4 – Verify VM and Subnet Deployment
+
+In this step, we verified that both virtual machines and their associated subnets were created successfully inside the correct virtual networks.
+
+First, we listed all virtual machines within the resource group to confirm that `VM1` and `VM2` were provisioned correctly.
+
+**Command:**
+```bash
+az vm list --resource-group VNetPeeringLabRG -o table
+```
+Next, we confirmed that each virtual network (VNet1 and VNet2) contained the expected subnets (Subnet1 and Subnet2).
+
+Commands: 
+``` bash
+# List VNet1 subnets
+az network vnet subnet list \
+  --resource-group VNetPeeringLabRG \
+  --vnet-name VNet1 \
+  -o table
+
+# List VNet2 subnets
+az network vnet subnet list \
+  --resource-group VNetPeeringLabRG \
+  --vnet-name VNet2 \
+  -o table
+```
+Verification showed both subnets and both VMs were provisioned and assigned to the correct virtual networks
+
